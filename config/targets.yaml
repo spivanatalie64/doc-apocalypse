@@ -1,0 +1,216 @@
+# 🎯 DOC-APOCALYPSE TARGET LIST
+# Every source of open source + corporate documentation we're consuming
+# Organized by category. Storage paths, rate limits, methods.
+
+github:
+  enabled: true
+  rate_limit: 5000  # req/hr unauthenticated, 5000/hr authenticated
+  method: clone  # clone repos, extract docs/ directories
+  top_orgs:
+    - microsoft
+    - google
+    - facebook
+    - apple
+    - amazon
+    - netflix
+    - cloudflare
+    - kubernetes
+    - docker
+    - openshift
+    - hashicorp
+    - elastic
+    - apache
+    - mozilla
+    - gnome
+    - KDE
+    - torvalds
+    - nodejs
+    - npm
+    - python
+    - golang
+    - rust-lang
+    - dotnet
+    - tensorflow
+    - pytorch
+    - ansible
+    - terraform
+    - nginx
+    - redis
+    - postgres
+    - mysql
+    - mongo
+    - sqlite
+    - signalapp
+    - godotengine
+    - blender
+    - ffmpeg
+    - curl
+    - git
+    - vim
+    - neovim
+    - tmux
+    - zsh-users
+    - fish-shell
+    - alacritty
+    - wezterm
+    - swaywm
+    - i3
+    - hyprwm
+    - systemd
+    - coreos
+    - flatpak
+    - snapcore
+    - nixos
+    - gentoo
+    - voidlinux
+    - alpine
+  doc_patterns:
+    - "README*"
+    - "*.md"
+    - "*.rst"
+    - "docs/**"
+    - "documentation/**"
+    - "wiki/**"
+    - "doc/**"
+    - "man/**"
+    - "*.txt"
+
+gitlab:
+  enabled: true
+  instances:
+    gitlab.com:
+      method: api
+      rate_limit: 2000
+    gitlab.freedesktop.org:
+      method: api
+    gitlab.gnome.org:
+      method: api
+    gitlab.kitware.com:
+      method: api
+    salsa.debian.org:
+      method: api
+    gitlab.archlinux.org:
+      method: api
+  doc_patterns: ["README*", "*.md", "*.rst", "docs/**", "doc/**"]
+
+manpages:
+  enabled: true
+  sources:
+    - name: arch-official
+      type: pacman
+      extract_cmd: "pacman -Ql '{pkg}' | awk '{print $2}' | grep '^usr/share/man/'"
+    - name: arch-aur  # limited by what's installed
+      type: filesystem
+    - name: debian-main
+      type: apt  # would need apt repos
+    - name: man.archlinux.org
+      type: web
+      base_url: "https://man.archlinux.org/"
+  output_format: "text"  # text, html, or both
+
+readthedocs:
+  enabled: true
+  api_url: "https://readthedocs.org/api/v3/"
+  rate_limit: 60
+  top_projects:
+    - python
+    - django
+    - flask
+    - requests
+    - numpy
+    - pandas
+    - matplotlib
+    - scipy
+    - scikit-learn
+    - pytorch
+    - tensorflow
+    - kubernetes
+    - docker-compose
+    - ansible
+    - salt
+    - celery
+    - sphinx
+    - mkdocs
+    - pip
+    - virtualenv
+    - conda
+    - jupyter
+    - readthedocs
+
+devdocs:
+  enabled: true
+  api_url: "https://devdocs.io/docs.json"
+  output_format: "html+text"
+
+corporate:
+  enabled: true
+  sources:
+    microsoft:
+      name: "Microsoft Learn"
+      base_url: "https://learn.microsoft.com/en-us/"
+      docsets:
+        - "dotnet"
+        - "azure"
+        - "windows"
+        - "office"
+        - "powershell"
+        - "vscode"
+        - "typescript"
+    google:
+      name: "Google Cloud Docs"
+      base_url: "https://cloud.google.com/docs/"
+      docsets:
+        - "compute"
+        - "storage"
+        - "kubernetes"
+        - "bigquery"
+        - "iam"
+        - "run"
+        - "functions"
+        - "ai-platform"
+    amazon:
+      name: "AWS Docs"
+      base_url: "https://docs.aws.amazon.com/"
+      docsets:
+        - "ec2"
+        - "s3"
+        - "lambda"
+        - "eks"
+        - "rds"
+        - "iam"
+        - "dynamodb"
+        - "cloudfront"
+    cloudflare:
+      name: "Cloudflare Docs"
+      base_url: "https://developers.cloudflare.com/"
+      docsets: ["workers", "pages", "d1", "r2", "kv", "ai", "turnstile", "zero-trust"]
+    oracle:
+      name: "Oracle Docs"
+      base_url: "https://docs.oracle.com/"
+      docsets: ["java", "database", "linux"]
+    ibm:
+      name: "IBM Docs"
+      base_url: "https://cloud.ibm.com/docs/"
+    redhat:
+      name: "Red Hat Docs"
+      base_url: "https://docs.redhat.com/"
+    canonical:
+      name: "Canonical/Ubuntu Docs"
+      base_url: "https://docs.ubuntu.com/"
+
+wikis:
+  enabled: true
+  sources:
+    - name: "Arch Wiki"
+      url: "https://wiki.archlinux.org/"
+      method: dump  # XML dump available
+    - name: "Gentoo Wiki"
+      url: "https://wiki.gentoo.org/"
+      method: scrape
+    - name: "Wikipedia Dev Portal"
+      url: "https://en.wikipedia.org/wiki/Portal:Computing"
+      method: scrape
+    - name: "MDN Web Docs"
+      url: "https://developer.mozilla.org/en-US/"
+      method: scrape
+      depth: 5
